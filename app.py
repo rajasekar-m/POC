@@ -7,10 +7,7 @@ from supporting_functions import (
      get_transcript,
      translate_transcript,
      generate_notes,
-     get_important_topics,
-     create_chunks,
-     create_vector_store,
-     rag_answer
+     get_important_topics
 )
 
 
@@ -67,33 +64,33 @@ if submit_button:
 
                 st.success("Summary and Notes Generated.")
 
-            if task_option == "Chat with Video":
-                with st.spinner("Step 2/3: Creating chunks and vector store...."):
-                    chunks = create_chunks(full_transcript)
-                    vectorstore = create_vector_store(chunks)
-                    st.session_state.vector_store = vectorstore
-                st.session_state.messages=[]
-                st.success('Video is ready for chat.....')
+#             if task_option == "Chat with Video":
+#                 with st.spinner("Step 2/3: Creating chunks and vector store...."):
+#                     chunks = create_chunks(full_transcript)
+#                     vectorstore = create_vector_store(chunks)
+#                     st.session_state.vector_store = vectorstore
+#                 st.session_state.messages=[]
+#                 st.success('Video is ready for chat.....')
 
 
-# chatbot session
-if task_option=="Chat with Video" and "vector_store" in st.session_state:
-    st.divider()
-    st.subheader("Chat with Video")
+# # chatbot session
+# if task_option=="Chat with Video" and "vector_store" in st.session_state:
+#     st.divider()
+#     st.subheader("Chat with Video")
 
-    # Display the entire history
-    for message in st.session_state.get('messages',[]):
-        with st.chat_message(message['role']):
-            st.write(message['content'])
+#     # Display the entire history
+#     for message in st.session_state.get('messages',[]):
+#         with st.chat_message(message['role']):
+#             st.write(message['content'])
 
-    # user_input
-    prompt= st.chat_input("Ask me anything about the video.")
-    if prompt:
-        st.session_state.messages.append({'role':'user','content':prompt})
-        with st.chat_message('user'):
-            st.write(prompt)
+#     # user_input
+#     prompt= st.chat_input("Ask me anything about the video.")
+#     if prompt:
+#         st.session_state.messages.append({'role':'user','content':prompt})
+#         with st.chat_message('user'):
+#             st.write(prompt)
 
-        with st.chat_message('assistant'):
-           response= rag_answer(prompt,st.session_state.vector_store)
-           st.write(response)
-        st.session_state.messages.append({'role': 'assistant', 'content':response})
+#         with st.chat_message('assistant'):
+#            response= rag_answer(prompt,st.session_state.vector_store)
+#            st.write(response)
+#         st.session_state.messages.append({'role': 'assistant', 'content':response})
